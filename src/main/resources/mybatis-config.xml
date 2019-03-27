@@ -41,13 +41,13 @@
 	
 	<!-- 类型别名 -->
 	<typeAliases>
-		<typeAlias alias="Page" type="cn.net.dckj.enrolment.common.persistence.Page" /><!--分页  -->
-		<typeAlias alias="ChartData" type="cn.net.dckj.enrolment.common.persistence.ChartData"/>
+		<typeAlias alias="Page" type="cn.net.dckj.common.persistence.Page" /><!--分页  -->
+		<typeAlias alias="ChartData" type="cn.net.dckj.common.persistence.ChartData"/>
 	</typeAliases>
 	
 	<!-- 插件配置 -->
 	<plugins>
-		<plugin interceptor="cn.net.dckj.enrolment.common.persistence.interceptor.PaginationInterceptor" />
+		<plugin interceptor="cn.net.dckj.common.persistence.interceptor.PaginationInterceptor" />
     </plugins>
 	
 </configuration>

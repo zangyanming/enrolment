@@ -16,9 +16,9 @@ if (Servlets.isAjaxRequest(request)) {
 //输出异常信息页面
 else {
 %>
-<%@page import="cn.net.dckj.enrolment.common.web.Servlets"%>
-<%@page import="cn.net.dckj.enrolment.common.utils.Exceptions"%>
-<%@page import="cn.net.dckj.enrolment.common.utils.StringUtils"%>
+<%@page import="cn.net.dckj.common.web.Servlets"%>
+<%@page import="cn.net.dckj.common.utils.Exceptions"%>
+<%@page import="cn.net.dckj.common.utils.StringUtils"%>
 <%@page contentType="text/html;charset=UTF-8" isErrorPage="true"%>
 <%@include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>

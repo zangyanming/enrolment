@@ -36,10 +36,10 @@ if (Servlets.isAjaxRequest(request)) {
 else {
 %>
 <%@page import="org.slf4j.Logger,org.slf4j.LoggerFactory"%>
-<%@page import="cn.net.dckj.enrolment.common.web.Servlets"%>
-<%@page import="cn.net.dckj.enrolment.common.utils.Exceptions"%>
-<%@page import="cn.net.dckj.enrolment.common.utils.StringUtils"%>
-<%@ page import="cn.net.dckj.enrolment.common.persistence.JsonData" %>
+<%@page import="cn.net.dckj.common.web.Servlets"%>
+<%@page import="cn.net.dckj.common.utils.Exceptions"%>
+<%@page import="cn.net.dckj.common.utils.StringUtils"%>
+<%@ page import="cn.net.dckj.common.persistence.JsonData" %>
 <%@page contentType="text/html;charset=UTF-8" isErrorPage="true"%>
 <%@include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>

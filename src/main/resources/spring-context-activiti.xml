@@ -8,7 +8,7 @@
 	<description>Activiti Configuration</description>
 	
 	<!-- 加载配置属性文件 -->
-	<context:property-placeholder ignore-unresolvable="true" location="classpath:ums.properties" />
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:enrol.properties" />
 	
 	<!-- Activiti begin -->
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
@@ -30,8 +30,8 @@
 		<!-- 自定义用户权限 ，必须重新实现用户和组的相应方法-->
 		<property name="customSessionFactories">
 			<list>
-				<bean class="cn.net.dckj.enrolment.modules.act.service.ext.ActUserEntityServiceFactory"/>
-				<bean class="cn.net.dckj.enrolment.modules.act.service.ext.ActGroupEntityServiceFactory"/>
+				<bean class="cn.net.dckj.modules.act.service.ext.ActUserEntityServiceFactory"/>
+				<bean class="cn.net.dckj.modules.act.service.ext.ActGroupEntityServiceFactory"/>
 			</list>
 		</property>
 
