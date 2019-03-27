@@ -1,0 +1,23 @@
+<form id="login_form" class="needs-validation" novalidate>
+    <!-- ko if:showAlert -->
+    <div class="alert alert-warning text-center" role="alert">
+        这是您首次登录，点击<a href="javascript:void(0);" class="alert-link" data-bind="click:_onModifyPassword">修改密码</a>.
+    </div>
+    <!-- /ko -->
+    <div class="input-group mb-2">
+        <div class="input-group-prepend">
+            <div class="input-group-text"><span class="zi zi_user"></span></div>
+        </div>
+        <input class="form-control h-100" name="login_form_name" data-bind="textInput:record.name,attr:record.getField('name')._attr">
+        <div class="invalid-tooltip" data-bind="text:record.getField('name').validateMessage"></div>
+    </div>
+    <div class="input-group mb-4">
+        <div class="input-group-prepend">
+            <div class="input-group-text"><span class="zi zi_key"></span></div>
+        </div>
+        <input class="form-control h-100" name="login_form_password" data-bind="textInput:record.password,attr:record.getField('password')._attr">
+        <div class="invalid-tooltip" data-bind="text:record.getField('password').validateMessage"></div>
+        </div>
+    </div>
+</form>
+<button type="button" class="btn btn-primary w-100" data-bind="click:_onLogin">登录</button>

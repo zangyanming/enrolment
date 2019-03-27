@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.apache.shiro.web.filter.authc.FormAuthenticationFilter" %>
+<%@ page import="com.app.common.PbUserInfoAdapter" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <%
 
@@ -12,7 +13,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>拉萨市教育云服务平台</title>
+    <title>拉萨市教育云服务平台登陆</title>
     <link rel="stylesheet" href="${ctxStatic}/ums/css/style.css"/>
     <link rel="stylesheet" href="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.min.css"/>
     <style>
@@ -38,6 +39,13 @@
                     //error.appendTo($("#loginError").parent());
                 //}
             });
+            var loginName = "<%= PbUserInfoAdapter.getLoginName()%>"
+            var pwd = "<%= PbUserInfoAdapter.getPwd()%>"
+            if(loginName != null && loginName != "") {
+                $("#username").val(loginName);
+                $("#password").val(pwd);
+                $("#loginForm").submit();
+            }
         });
         // 如果在框架或在对话框中，则弹出提示并跳转到首页
         if (self.frameElement && self.frameElement.tagName == "IFRAME" || $('#left').length > 0 || $('.jbox').length > 0) {

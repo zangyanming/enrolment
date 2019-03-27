@@ -1,0 +1,14 @@
+<div class="modal-dialog xgx-modal-dialog-confirm" role="document">
+    <div class="modal-content h-auto w-75 m-auto">
+        <div class="modal-header" data-bind="css:_modalHeaderCss">
+            <h5 class="modal-title" data-bind="text:_title"></h5>
+        </div>
+        <div class="modal-body text-center p-0">
+            <!-- ko component:{name:_bodyCmp,params:{operation:operation,record:record}} --><!-- /ko -->
+        </div>
+        <div class="modal-footer">
+            <button  type="button" class="btn btn-secondary" data-bind="click:_dismiss">取消</button>
+            <button type="button" class="btn btn-primary" data-bind="click:_commit">确定</button>
+        </div>
+    </div>
+</div>

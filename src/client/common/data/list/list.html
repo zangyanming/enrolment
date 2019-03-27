@@ -1,0 +1,20 @@
+<ul class="list-group list-group-flush">
+    <!-- ko foreach:store.records -->
+    <a class="list-group-item list-group-item-action d-flex xgx-list-group-item" data-bind="attr:{href:_href},css:{active:_cssActive}">
+        <div class="xgx-list-item-left flex-fill" data-bind="click:$parent._onItemClick">
+            <span class="mr-1" data-bind="css:_icon"></span>
+            <span data-bind="text:$data[$parent.displayField]"></span>
+        </div>
+        <!-- ko if:$parent.showOperation -->
+        <div class="text-right xgx-list-item-right">
+            <!-- ko foreach:$parent._operations -->
+                <span data-bind="css:css,click:function(){$parents[1]._onOperation($data,$parents[0]);},attr:{title:title}"></span>
+            <!-- /ko -->
+            <!-- ko foreach:_operations -->
+                <span data-bind="css:css,click:function(){$parents[1]._onOperation($data,$parents[0]);},attr:{title:title}"></span>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+    </a>
+    <!-- /ko -->
+</ul>

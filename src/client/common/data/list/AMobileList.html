@@ -1,0 +1,19 @@
+<div class="list-group xgx-mobile-list-group" data-bind="attr:{id:_id}">
+    <!-- ko foreach:store.records-->
+    <a href="javascript:void(0);" class="list-group-item list-group-item-action flex-column align-items-start pr-5" data-bind="attr:{id:$parent.model+$index()+'_touch'},click:$parent._onItemClick">
+        <!-- ko component:{name:$parent.itemCmp,params:{record:$data}} --><!-- /ko -->
+        <!-- ko if:$parent.operations.length>0 -->
+        <span class="xgx-mobile-list-item-right zi zi_forRight"></span>
+        <div class="xgx-mobile-list-operation container rounded" data-bind="attr:{id:$parent.model+$index()+'_touch_operation'}">
+            <div class="row align-items-center h-100 ml-2">
+                <div class="col">
+                    <!-- ko foreach:$parent.operations -->
+                    <button class="btn btn-primary rounded" data-bind="text:name,click:function(item,event){$parents[1]._onOperationClick($parent,event,$data)}"></button>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </a>
+    <!-- /ko -->
+</div>

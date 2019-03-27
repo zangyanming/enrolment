@@ -1,0 +1,27 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center mb-1 mt-1">
+        <li class="page-item" data-bind="css:{disabled:preDisabled}">
+            <a class="page-link" title="首页" href="javascript:void(0)" data-bind="click:firstBtnClick">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" data-bind="css:{disabled:preDisabled}">
+            <a class="page-link" title="上一页" href="javascript:void(0)" data-bind="click:preBtnClick">
+                <span aria-hidden="true">&lsaquo;</span>
+            </a>
+        </li>
+        <!-- ko foreach:pageBtns -->
+        <li class="page-item" data-bind="css:{active:_cssActive}"><a class="page-link" href="javascript:void(0)" data-bind="text:text,click:$parent.pageBtnClick"></a></li>
+        <!-- /ko -->
+        <li class="page-item" data-bind="css:{disabled:nextDisabled}">
+            <a class="page-link" title="下一页" href="javascript:void(0)" data-bind="click:nextBtnClick">
+                <span aria-hidden="true" >&rsaquo;</span>
+            </a>
+        </li>
+        <li class="page-item" data-bind="css:{disabled:nextDisabled}">
+            <a class="page-link" title="尾页" href="javascript:void(0)" data-bind="click:lastBtnClick">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

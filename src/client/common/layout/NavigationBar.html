@@ -1,0 +1,39 @@
+<div class="container-fluid xgx-navbar">
+    <div class="navbar navbar-expand flex-column flex-md-row pl-0 pr-0"
+         data-bind="css:{container:!$root.fluid,'container-fluid':$root.fluid,'navbar-light':light,'navbar-dark':!light,'nav-pills':pills}">
+        <!-- ko if:brand -->
+        <span class="navbar-brand">
+            <img class="pl-2" data-bind="attr:{src:brand}" alt=""/>
+        </span>
+        <!-- /ko -->
+        <!-- ko if:title -->
+        <h2 class="ml-2 mr-4 xgx-navbar-title" data-bind="text:title"></h2>
+        <!-- /ko -->
+        <div>
+            <ul class="navbar-nav" data-bind="foreach: menuItems">
+                <li class="nav-item text-center">
+                    <a class="nav-link"
+                       data-bind="attr:_attr,css:{active:_cssActive},text:name,click:$parent.menuClick"></a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav flex-row ml-md-auto mr-1" data-bind="foreach: shortcutItems">
+            <!-- ko if:subItems.length == 0 -->
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0);"
+                   data-bind="css:css,text:name,click:function(){$parent._shortcutClick(name);}"></a>
+            </li>
+            <!-- /ko -->
+            <!-- ko ifnot:subItems.length == 0 -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown"
+                   data-bind="css:css,text:name"></a>
+                <div class="dropdown-menu dropdown-menu-right" data-bind="foreach: subItems">
+                    <a class="dropdown-item" href="javascript:void(0);"
+                       data-bind="text:$data,click:$parents[1]._shortcutClick"></a>
+                </div>
+            </li>
+            <!-- /ko -->
+        </ul>
+    </div>
+</div>

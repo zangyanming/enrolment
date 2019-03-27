@@ -1,0 +1,17 @@
+<!-- ko if:$root.showProgress -->
+<!-- ko component:{name:'cmp:Progress'} --><!-- /ko -->
+<!-- /ko -->
+<!-- ko if:$root.topCmp -->
+<!-- ko component:{name:$root.topCmp().name,params:$root.topCmp().params} --><!-- /ko -->
+<!-- /ko -->
+<!-- ko if:$root.mainCmp  -->
+<!-- ko component:{name:$root.mainCmp().name,params:$root.mainCmp().params} --><!-- /ko -->
+<!-- /ko -->
+<!-- ko if:$root.bottomCmp -->
+<!-- ko component:{name:$root.bottomCmp().name,params:$root.bottomCmp().params} --><!-- /ko -->
+<!-- /ko -->
+<!-- ko foreach:$root.modalStack -->
+<div data-bind="attr:{id:params._id},css:{'xgx-model-mobile':$root.mobile}" class="modal fade" tabindex="-1" role="dialog">
+    <!-- ko component:{name:cmp,params:params} --><!-- /ko -->
+</div>
+<!-- /ko -->

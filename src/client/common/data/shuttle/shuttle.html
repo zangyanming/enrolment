@@ -1,0 +1,21 @@
+<div class="row align-items-center xgx-shuttle">
+    <div class="col-5">
+        <select class="custom-select" data-bind="options:leftItems,optionsText:displayName,selectedOptions:leftChosenItems" multiple></select>
+    </div>
+    <div class="col">
+        <button type="button"
+                class="w-75 ml-auto mr-auto mb-4 d-block btn btn-sm btn-outline-secondary zi zi_doubleRight" data-bind="click:function(){onShuttle('ar')}"></button>
+        <button type="button"
+                class="w-75 ml-auto mr-auto mb-2 d-block btn-sm btn btn-outline-secondary zi zi_forRight" data-bind="click:function(){onShuttle('r')}"></button>
+        <button type="button"
+                class="w-75 ml-auto mr-auto mb-4 d-block btn-sm btn btn-outline-secondary zi zi_forLeft" data-bind="click:function(){onShuttle('l')}"></button>
+        <button type="button"
+                class="w-75 m-auto  d-block btn btn-sm btn-outline-secondary zi zi_doubleLeft" data-bind="click:function(){onShuttle('al')}"></button>
+    </div>
+    <div class="col-5">
+        <select class="custom-select" data-bind="options:rightItems,optionsText:displayName,selectedOptions:rightChosenItems" multiple></select>
+    </div>
+</div>
+
+
+

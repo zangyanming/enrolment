@@ -12,7 +12,7 @@
         <param-value>/WEB-INF/classes/spring-context*.xml</param-value>
     </context-param>
     <listener>
-        <listener-class>cn.net.dckj.modules.sys.listener.WebContextListener</listener-class>
+        <listener-class>com.cd.ums.modules.sys.listener.WebContextListener</listener-class>
     </listener>
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
@@ -51,7 +51,7 @@
     <!-- PageCache, cache .html suffix.
     <filter>
         <filter-name>PageCacheFilter</filter-name>
-        <filter-class>PageCachingFilter</filter-class>
+        <filter-class>com.cd.ums.common.filter.PageCachingFilter</filter-class>
         <init-param>
             <param-name>cacheName</param-name>
             <param-value>pageCachingFilter</param-value>
@@ -95,6 +95,16 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!-- Activiti diagram-view callback filter-->
+    <filter>
+        <filter-name>JSONPFilter</filter-name>
+        <filter-class>com.cd.ums.modules.act.rest.servlet.JsonpCallbackFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>JSONPFilter</filter-name>
+        <url-pattern>/act/service/*</url-pattern>
+    </filter-mapping>
+
     <!-- DruidStatView -->
     <servlet>
         <servlet-name>DruidStatView</servlet-name>
@@ -112,7 +122,7 @@
     <!-- CKFinder -->
     <servlet>
         <servlet-name>CKFinderConnectorServlet</servlet-name>
-        <servlet-class>cn.net.dckj.common.web.CKFinderConnectorServlet</servlet-class>
+        <servlet-class>com.cd.ums.common.web.CKFinderConnectorServlet</servlet-class>
         <init-param>
             <param-name>XMLConfig</param-name>
             <param-value>/WEB-INF/ckfinder.xml</param-value>
@@ -123,7 +133,7 @@
         </init-param>
         <init-param>
             <param-name>configuration</param-name>
-            <param-value>cn.net.dckj.common.web.CKFinderConfig</param-value>
+            <param-value>com.cd.ums.common.web.CKFinderConfig</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -148,10 +158,51 @@
         <url-pattern>/static/ckfinder/core/connector/java/connector.java</url-pattern>
     </filter-mapping>
 
+<!--
+    <filter>
+        <filter-name>CASFilter</filter-name>
+
+        <filter-class>org.jasig.cas.client.filter.CASFilter</filter-class>
+        <init-param>
+            <param-name>org.jasig.cas.server.loginUrl</param-name>
+            <param-value>http://jcsj.xzlsedu.com:9080/cas/login?sid=lsjyxxxt</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.jasig.cas.server.logoutUrl</param-name>
+            <param-value>http://jcsj.xzlsedu.com:9080/cas/logout</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.jasig.cas.client.userInfoAdapterClass</param-name>
+            <param-value>com.app.common.PbUserInfoAdapter</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.jasig.cas.server.validateUrl</param-name>
+            <param-value>http://jcsj.xzlsedu.com:9080/cas/proxyValidate?sid=1911</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.jasig.cas.client.serverName</param-name>
+            <param-value>192.168.0.104:8181</param-value>
+        </init-param>
+        <init-param>
+            <description>cas not filter url</description>
+            <param-name>exceptPaths</param-name>
+            <param-value>/app/toAppDetail,/app/toAppList,/sys/reg,/sys/toReg,/sys/toLogin,/sys/kfzlogin,/validateCode/doGet,/validateCode/doGet?,/sys/toIndex,/sys/validateLoginName,/sys/validateLoginPwd,/sys/valiadApprove,/sys/valiadKfz,/sys/reg,/a/rest/newsend,/a/rest/newreceive</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CASFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CASFilter</filter-name>
+        <url-pattern>/a/*</url-pattern>
+    </filter-mapping>
+-->
     <!-- Userfiles download -->
     <servlet>
         <servlet-name>UserfilesDownloadServlet</servlet-name>
-        <servlet-class>cn.net.dckj.common.servlet.UserfilesDownloadServlet</servlet-class>
+        <servlet-class>com.cd.ums.common.servlet.UserfilesDownloadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserfilesDownloadServlet</servlet-name>
@@ -161,7 +212,7 @@
     <!-- Validate code -->
     <servlet>
         <servlet-name>ValidateCodeServlet</servlet-name>
-        <servlet-class>cn.net.dckj.common.servlet.ValidateCodeServlet</servlet-class>
+        <servlet-class>com.cd.ums.common.servlet.ValidateCodeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ValidateCodeServlet</servlet-name>

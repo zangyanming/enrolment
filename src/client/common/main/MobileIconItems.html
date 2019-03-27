@@ -1,0 +1,9 @@
+<!-- ko foreach:items -->
+<div class="col-4 text-center">
+    <div class="border pt-4" data-bind="click:function(){$parent.onItemClick($index(),$data);}">
+        <p data-bind="css:css,style:{color:iconColor}"></p>
+        <p data-bind="text:name"></p>
+    </div>
+</div>
+<!-- /ko -->
+

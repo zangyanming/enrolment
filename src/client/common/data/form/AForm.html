@@ -1,0 +1,102 @@
+<!-- ko if:_showForm -->
+<form data-bind="attr:{id:_id}" class="needs-validation" novalidate onsubmit="return false;">
+    <!-- ko foreach:_fieldSets -->
+    <div class="card">
+        <!-- ko if:name -->
+        <div class="card-header">
+            <span class="font-weight-bold" data-bind="text:name"></span><div class="float-right"><span class="glyphicon glyphicon-menu-hamburger" data-bind="attr:{'data-target':'#form_fieldset_'+ $index()}" data-toggle="collapse"></span></div>
+        </div>
+        <!-- /ko -->
+        <div data-bind="attr:{id:'form_fieldset_'+ $index()}" class="collapse show">
+            <div class="card-body p-3">
+                <!-- ko foreach:_fields -->
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" data-bind="text:alias,attr:{for:_attr.id}"></label>
+                    <div class="col-sm-10">
+                        <!-- ko if:type=='text' || type=='password' || type=='date' || type=='number' -->
+                        <input class="form-control"
+                               data-bind="textInput:$parents[1].record[name],enable:!$parents[1].isView(name),attr:_attr,event:{blur:$parents[1].onFieldBlur}"/>
+                        <div class="invalid-tooltip"
+                             data-bind="text:$parents[1].record.getField(name).validateMessage"></div>
+                        <!-- /ko -->
+                        <!-- ko if:type=="textarea" -->
+                        <textarea class="form-control"
+                                  data-bind="textInput:$parents[1].record[name],enable:!$parents[1].isView(name),attr:_attr"/>
+                        <div class="invalid-tooltip"
+                             data-bind="text:$parents[1].record.getField(name).validateMessage"></div>
+                        <!-- /ko -->
+                        <!-- ko if:type == 'checkboxs' -->
+                        <div class="border pt-1 pb-1 pl-2 rounded">
+                            <!-- ko foreach:options -->
+                            <div class="form-check m-1">
+                                <input class="form-check-input" type="checkbox" data-bind="enable:!$parents[2].isView($parent.name),checked:$parents[2].record[$parent.name],value:value,attr:{id:'check_'+$parent.name+'_'+$index()}">
+                                <label class="mb-0" data-bind="text:text,attr:{for:'check_'+$parent.name+'_'+$index()}"></label>
+                            </div>
+                            <!-- /ko -->
+                            <input class="form-control d-none"
+                                   data-bind="textInput:$parents[1].record[name],enable:!$parents[1].isView(name),attr:_attr"/>
+                            <div class="invalid-tooltip"
+                                 data-bind="text:$parents[1].record.getField(name).validateMessage"></div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if:type=='select' -->
+                        <select class="form-control" data-bind="options: options,
+                       optionsText: optionsText,
+                       optionsValue: optionsValue,
+                       value: $parents[1].record[name],
+                       valueAllowUnset:true,
+                       optionsCaption: '请选择...',enable:!$parents[1].isView(name),attr:_attr"></select>
+                        <div class="invalid-tooltip"
+                             data-bind="text:$parents[1].record.getField(name).validateMessage"></div>
+                        <!-- /ko -->
+                        <!-- ko if:type=='file'-->
+                        <!-- ko ifnot:$parents[1].isView(name) -->
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input"
+                                   data-bind="fileInput: $parents[1].record[name],attr:_attr">
+                            <div class="invalid-tooltip"
+                                 data-bind="text:$parents[1].record.getField(name).validateMessage"></div>
+                            <label class="custom-file-label"
+                                   data-bind="attr:{for:_attr.id},text:$parents[1].record[name].file()==undefined?_attr.placeholder:$parents[1].record[name].file().name"></label>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if:preview-->
+                        <!-- ko if:_mimeType == 'img' && $parents[1].record['_preview_' + name]() -->
+                        <img data-bind="attr:{src:$parents[1].record['_preview_' + name]}" class="img-fluid img-thumbnail mt-2" alt="">
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <!-- ko if:type=='tree' -->
+                        <!-- ko component:{name:'cmp:TreeField',params:{field:$data,record:$parents[1].record}} -->
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <!-- ko if:type=='list' -->
+                        <!-- ko component:{name:'cmp:ListField',params:{field:$data,record:$parents[1].record}} --><!-- /ko -->
+                        <input class="form-control d-none"
+                               data-bind="textInput:$parents[1].record[name],enable:!$parents[1].isView(name),attr:_attr"/>
+                        <div class="invalid-tooltip"
+                             data-bind="text:$parents[1].record.getField(name).validateMessage"></div>
+                        <!-- /ko -->
+                        <!-- ko if:type == 'checkbox' -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"data-bind="checked:$parents[1].record[name],enable:!$parents[1].isView(name),attr:_attr">
+                            <label class="form-check-label" data-bind="text:label,attr:{for:_attr.id}"></label>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+    <!-- ko if:_showButtons -->
+    <div class="text-center">
+        <!-- ko foreach:_buttons -->
+        <button class="btn btn-primary" data-bind="text:title,click:$parent._onButtonClick"></button>
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</form>
+<!-- /ko -->
+

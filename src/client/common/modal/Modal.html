@@ -1,0 +1,44 @@
+<div class="modal-dialog" data-bind="css:_modalCss" role="document">
+    <div class="modal-content">
+        <!-- ko ifnot:$root.mobile -->
+        <div class="modal-header" data-bind="css:_modalHeaderCss">
+            <h5 class="modal-title" data-bind="text:_title"></h5>
+            <button type="button" class="close" aria-label="Close" data-bind="click:_dismiss">
+                <span class="zi zi_times" aria-hidden="true"></span>
+            </button>
+        </div>
+        <!-- /ko -->
+        <!-- ko if:$root.mobile -->
+        <div class="modal-header" data-bind="css:_modalHeaderCss">
+            <span data-bind="click:_dismiss" class="xgx-modal-header-back zi zi_forLeft"></span>
+            <h5 class="modal-title" data-bind="text:_title"></h5>
+            <div class="mr-3">
+                <!-- ko foreach:_titleOperations -->
+                <span class="xgx-modal-header-right"
+                      data-bind="css:css,attr:{title:title},click:$parent._onTitleOP"></span>
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="modal-body p-0">
+            <!-- ko if:operation -->
+            <!-- ko component:{name:_bodyCmp,params:{operation:operation,record:record,_parent:$data}} --><!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot:operation -->
+            <!-- ko component:{name:_bodyCmp,params:record} --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <!-- ko if:_buttons().length>0 -->
+        <div class="modal-footer">
+            <!-- ko foreach:_buttons -->
+            <!-- ko if:name=='cancel' -->
+            <button type="button" class="btn btn-secondary" data-bind="text:title,click:$parent._dismiss"></button>
+            <!-- /ko -->
+            <!-- ko ifnot:name=='cancel' -->
+            <button type="button" class="btn btn-primary" data-bind="text:title,click:$parent._onButtonClick"></button>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

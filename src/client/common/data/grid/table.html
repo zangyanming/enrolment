@@ -1,0 +1,38 @@
+<table class="table table-bordered  table-hover table-striped border-bottom mb-0">
+    <thead class="thead-light">
+    <tr>
+        <!-- ko foreach:_displayFields -->
+        <th scope="col" data-bind="text:alias" class="sticky-top"></th>
+        <!-- /ko -->
+        <!-- ko if:showOperation-->
+        <th scope="col" class="sticky-top">操作</th>
+        <!-- /ko -->
+    </tr>
+    </thead>
+    <tbody>
+    <!-- ko foreach:store.records() -->
+    <tr>
+        <!-- ko foreach:$parent._displayFields -->
+        <!-- ko if:name == 'rowId' -->
+        <th scope="row" data-bind="text:$parent[name]"></th>
+        <!-- /ko -->
+        <!-- ko ifnot:name == 'rowId' -->
+        <!-- ko with:{withRecord:$parent,withField:$data} -->
+        <td data-bind="text:withRecord[withField.name],css:withField._css,event:withField._event"></td>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if:$parent.showOperation-->
+        <td>
+            <!-- ko foreach:$parent._operations -->
+            <span data-bind="css:css,click:function(){$parents[1]._onOperation($data,$parents[0]);},attr:{title:title}"></span>
+            <!-- /ko -->
+            <!-- ko foreach:_operations -->
+            <span data-bind="css:css,click:function(){$parents[1]._onOperation($data,$parents[0]);},attr:{title:title}"></span>
+            <!-- /ko -->
+        </td>
+        <!-- /ko -->
+    </tr>
+    <!-- /ko -->
+    </tbody>
+</table>

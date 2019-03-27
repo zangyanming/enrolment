@@ -1,0 +1,24 @@
+<div class="rounded pt-1 bg-dark border text-light xgx-pdf-toolbar">
+    <select  style="background: inherit;color:inherit;" class="mr-2 xgx-pdf-toolbar-scale" data-bind="options: scaleOptions,
+                   optionsText: 'text',
+                   optionsValue: 'value',
+                   value:scaleValue,event:{change:scaleChange}"></select>
+    <button class="glyphicon glyphicon-chevron-left" style="background: inherit;color:inherit" title="上一页" data-bind="click:onPrevPage"></button><button
+        data-bind="click:onNextPage" class="glyphicon glyphicon-chevron-right" style="background: inherit;color:inherit" title="下一页"></button>
+    <input style="background: inherit;color:inherit;" title="当前页" class="border text-right pr-1 xgx-pdf-toolbar-page"
+           data-bind="textInput:pageNum"/><span>/</span><span
+        data-bind="text:maxPage"></span>
+</div>
+<div class="col bg-dark border xgx-pdf-container"
+     data-bind="event:{scroll:scroll}">
+    <!-- ko if:canvasWidth()>0 -->
+    <!-- ko foreach:pages -->
+    <canvas class="d-block mr-auto ml-auto border"
+            data-bind="style:$parent.canvasStyle,attr:{id:'pdf-page-'+page,height:$parent.canvasHeight,width:$parent.canvasWidth}"></canvas>
+    <!-- /ko -->
+    <!-- /ko -->
+</div>
+
+
+
+
