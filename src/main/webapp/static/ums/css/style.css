@@ -1,0 +1,72 @@
+/* CSS Document */
+*{ margin:0; padding:0; font-family:"微软雅黑"; }
+ol li, ul li{ list-style:none;}
+h1,h2,h3,h4,h5,h6{ font-weight:normal;}
+u,b,i{ font-style:normal;}
+a{text-decoration: none; color:#333;}
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,img,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{
+	/* [disabled]margin:0; */
+	padding: 0;
+	font-family: "microsoft yahei","simhei", "simsun";
+	margin:0;	
+}
+body{ background:#fff; z-index:-999999999; color: #666;/*background:#f4f4f4 url(bg_1.jpg) no-repeat fixed center 100%;*/ background-size: cover; -moz-background-size: cover;-webkit-background-size: cover; }
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
+table{border-collapse:collapse;border-spacing:0;}
+caption,th{font-weight:normal;}
+html,body,fieldset,img,iframe,abbr{border:0;}
+i,cite,em,var,address,dfn{font-style:normal;}
+[hidefocus],summary{outline:0;}
+li{list-style:none;}
+h1,h2,h3,h4,h5,h6,small{font-size:100%; font-weight:normal}
+sup,sub{font-size:83%;}
+pre,code,kbd,samp{font-family:inherit;}
+q:before,q:after{content:none;}
+textarea{overflow:auto;resize:none;}
+label,summary{cursor:default;}
+a,button{cursor:pointer; color: #666;}
+input:focus { outline:none;}
+del,ins,u,s,a,a:hover{text-decoration:none;}
+.fl{ float: left;}
+.fr{ float: right;}
+.clear{ clear: both;}
+.wrap{ width: 1200px; margin: 0 auto;}
+
+/********登陆********/
+.header{ height: 120px; line-height: 120px; background: #fff; overflow: hidden;background:#fff url(../images/by.png) 1100px 20px no-repeat;}
+.logo{ margin-top: 20px;}
+.login{padding:0px 35px;  }
+.login_wrap{ overflow: hidden;/* background: url(../images/bg.jpg) 0 0 no-repeat;*/ height: 660px; position: relative;}
+.login_wrap .bgimg{ position: absolute; width: 100%;}
+.login_content{ width: 320px; height: 350px; background: url(../images/whitebg.png) 0 0 repeat;/*background:rgb(255,255,255,0.9);*/ float: right; margin: 150px 0 100px 0; border-radius: 5px; position: absolute; right: 400px;}
+.login_content h3{color: #0071d1; margin-top: 20px; font-size: 20px;  text-align: center;height: 32px; line-height: 32px;}
+.login_content h2{ font-size: 18px; color: #0694f5;  margin-bottom: 20px;  }
+.login_content h2 a{ display: block; width: 160px; height: 50px; line-height: 50px; float: left; text-align: center; background: #f5f7fa;}
+.login_content h2 a.on{ background: #fff; color: #0071d1; font-weight: bolder;}
+.login_content select{ float: right; border: none; font-size: 16px; margin-top: 5px; color: #666;}
+.usrname,.password{ width: 260px; height: 35px; line-height: 35px; border: solid 1px #ccc;  margin: 20px auto;}
+.usrname b, .password b{ height: 25px; border-right: 1px solid #ccc; display: block; float: left; padding: 0px 10px; margin-top: 5px;}
+.usrname input[type="text"],.password input[type="password"]{ height: 35px; line-height: 35px; color: #333; width: 215px;  float: right;border: none; margin-right: 2px;text-indent: 10px;background:rgb(255,255,255,0); }
+.code{ height: 30px; line-height: 30px; color: #666; margin-bottom: 20px;}
+.code input[type="text"]{ width: 90px; height: 30px; line-height: 30px; border: solid 1px #ccc; text-indent: 5px; float: left;background:rgb(255,255,255,0);}
+.code b{ width: 90px; height: 35px; line-height: 35px; display: block; float: left; margin: 0 10px;}
+.code i{ color: #1f78d3; cursor: pointer;}
+.findpwd{ text-align: right; font-size: 14px;}
+.loginbtn { display: block; width: 260px; height: 40px; line-height: 40px; border-radius: 5px; text-align: center; color: #fff; cursor: pointer; background: #0694F5; border: none; margin: 30px 0px 20px 0; font-size: 16px; }
+.loginbtn:hover{ background: #0588e2;}
+.footer{ width: 100%; text-align: center; padding: 50px 0; line-height: 2; margin-top: 5px;}
+
+@media (max-width: 1366px) {
+	.wrap{ width: 1000px;}
+	.header{ height: 80px; background:#fff url(../images/by2.png) 800px 5px no-repeat;}
+	.logo{ margin: -4px 0 0 130px;}
+	.logo img{ height: 50px;}
+	.login_wrap{ height: 440px;}
+	.login_wrap .bgimg img{ position: absolute; width: 100%;}
+	.login_content{ height: 300px; right: 260px;margin-top: 80px;}
+	.login_content h3{ margin-top: 10px;}
+	.loginbtn{ height: 35px; line-height: 35px; margin: 15px 0;}
+	.usrname, .password{ margin: 15px auto;}
+	.footer{ margin-top: 0px; padding: 20px 0;}
+	
+}  
