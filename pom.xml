@@ -640,48 +640,7 @@
             <artifactId>spring-jms</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <dependency>
-            <groupId>lssms</groupId>
-            <artifactId>lssms</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/lib/lssms.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>commons-httpclient-3.1</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/lib/commons-httpclient-3.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>cas-client-core-3.3.3</groupId>
-            <artifactId>casClientCore</artifactId>
-            <version>3.3.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/lib/cas-client-core-3.3.3.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>httpclient-4.5.6</groupId>
-            <artifactId>httpClient</artifactId>
-            <version>4.5.6</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/lib/httpclient-4.5.6.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>jdom</groupId>
-            <artifactId>jdom</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/lib/jdom.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>ssoclient</groupId>
-            <artifactId>ssoClient</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/lib/ssoclient.jar</systemPath>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
