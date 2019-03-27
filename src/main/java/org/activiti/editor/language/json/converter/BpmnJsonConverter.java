@@ -12,28 +12,65 @@
  */
 package org.activiti.editor.language.json.converter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import math.geom2d.Point2D;
+
 import math.geom2d.conic.Circle2D;
+
 import math.geom2d.curve.AbstractContinuousCurve2D;
+
 import math.geom2d.line.Line2D;
+
 import math.geom2d.polygon.Polyline2D;
+
+import org.activiti.bpmn.model.Activity;
+import org.activiti.bpmn.model.Artifact;
+import org.activiti.bpmn.model.BaseElement;
+import org.activiti.bpmn.model.BoundaryEvent;
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.Event;
+import org.activiti.bpmn.model.EventDefinition;
+import org.activiti.bpmn.model.ExtensionElement;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.FlowElementsContainer;
+import org.activiti.bpmn.model.FlowNode;
+import org.activiti.bpmn.model.Gateway;
+import org.activiti.bpmn.model.GraphicInfo;
+import org.activiti.bpmn.model.Lane;
+import org.activiti.bpmn.model.Message;
+import org.activiti.bpmn.model.MessageEventDefinition;
+import org.activiti.bpmn.model.MessageFlow;
+import org.activiti.bpmn.model.Pool;
 import org.activiti.bpmn.model.Process;
-import org.activiti.bpmn.model.*;
+import org.activiti.bpmn.model.SequenceFlow;
+import org.activiti.bpmn.model.Signal;
+import org.activiti.bpmn.model.SignalEventDefinition;
+import org.activiti.bpmn.model.SubProcess;
+import org.activiti.bpmn.model.ValuedDataObject;
+
 import org.activiti.editor.constants.EditorJsonConstants;
 import org.activiti.editor.constants.StencilConstants;
 import org.activiti.editor.language.json.converter.util.JsonConverterUtil;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * @author Tijs Rademakers

@@ -1,16 +1,16 @@
 package org.apache.ibatis.thread;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.Configuration;
-import org.apache.log4j.Logger;
-import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.core.NestedIOException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.Configuration;
+import org.apache.log4j.Logger;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.springframework.core.NestedIOException;
 
 /**
  * 刷新使用进程
