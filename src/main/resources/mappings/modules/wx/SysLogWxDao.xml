@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.wx.dao.SysLogWxDao">
+    
+	<sql id="sysLogWxColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.remote_addr AS "remoteAddr",
+		a.user_agent AS "userAgent",
+		a.request_uri AS "requestUri",
+		a.method AS "method",
+		a.params AS "params",
+		a.send_office_id AS "sendOfficeId",
+		a.send_by AS "sendBy",
+		a.receive_by AS "receiveBy",
+		a.send_date AS "sendDate",
+		a.success AS "success",
+		a.exception AS "exception"
+	</sql>
+	
+	<sql id="sysLogWxJoins">
+	</sql>
+    
+	<select id="get" resultType="SysLogWx">
+		SELECT 
+			<include refid="sysLogWxColumns"/>
+		FROM sys_log_wx a
+		<include refid="sysLogWxJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SysLogWx">
+		SELECT 
+			<include refid="sysLogWxColumns"/>
+		FROM sys_log_wx a
+		<include refid="sysLogWxJoins"/>
+		<where>
+			<!--<if test="beginSendDate != null and endSendDate != null and beginSendDate != '' and endSendDate != ''">
+				AND a.send_date BETWEEN #{beginSendDate} AND #{endSendDate}
+			</if>-->
+			<if test="beginSendDate != null and beginSendDate != ''">
+				AND a.send_date <![CDATA[ >= #{beginSendDate} ]]>
+			</if>
+			<if test="endSendDate != null and endSendDate != ''">
+				AND a.send_date <![CDATA[ <= #{endSendDate} ]]>
+			</if>
+			<if test="success != null and success != ''">
+				AND a.success = #{success}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SysLogWx">
+		SELECT 
+			<include refid="sysLogWxColumns"/>
+		FROM sys_log_wx a
+		<include refid="sysLogWxJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_log_wx(
+			id,
+			title,
+			create_by,
+			create_date,
+			remote_addr,
+			user_agent,
+			request_uri,
+			method,
+			params,
+			send_office_id,
+			send_by,
+			receive_by,
+			send_date,
+			success,
+			exception
+		) VALUES (
+			#{id},
+			#{title},
+			#{createBy.id},
+			#{createDate},
+			#{remoteAddr},
+			#{userAgent},
+			#{requestUri},
+			#{method},
+			#{params},
+			#{sendOfficeId},
+			#{sendBy},
+			#{receiveBy},
+			#{sendDate},
+			#{success},
+			#{exception}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_log_wx SET 	
+			title = #{title},
+			remote_addr = #{remoteAddr},
+			user_agent = #{userAgent},
+			request_uri = #{requestUri},
+			method = #{method},
+			params = #{params},
+			send_office_id = #{sendOfficeId},
+			send_by = #{sendBy},
+			receive_by = #{receiveBy},
+			send_date = #{sendDate},
+			success = #{success},
+			exception = #{exception}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sys_log_wx
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.ContactDao">
+    
+	<sql id="contactColumns">
+		a.id AS "id",
+		a.group_id AS "groupId",
+		g.name as "groupName",
+		a.person_type AS "personType",
+		a.person_id AS "personId",
+		a.name AS "name",
+		a.qqhm AS "qqhm",
+		a.wxhm AS "wxhm",
+		a.email AS "email",
+		a.tel AS "tel",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id"
+	</sql>
+	
+	<sql id="contactJoins">
+		LEFT JOIN ums_group g ON g.id = a.group_id
+	</sql>
+    
+	<select id="get" resultType="Contact">
+		SELECT 
+			<include refid="contactColumns"/>
+		FROM ums_contact a
+		<include refid="contactJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Contact">
+		SELECT 
+			<include refid="contactColumns"/>
+		FROM ums_contact a
+		<include refid="contactJoins"/>
+		<where>
+			<if test="groupId != null and groupId != ''">
+				AND a.group_id = #{groupId}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Contact">
+		SELECT 
+			<include refid="contactColumns"/>
+		FROM ums_contact a
+		<include refid="contactJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListByIds" resultType="Contact">
+		SELECT
+		<include refid="contactColumns"/>
+		FROM ums_contact a
+		<include refid="contactJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="groupId != null and groupId != ''">
+				AND a.group_id = #{groupId}
+			</if>
+			<if test="ids != null">
+				and a.id in
+				<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO ums_contact(
+			id,
+			group_id,
+			person_type,
+			person_id,
+			name,
+			qqhm,
+			wxhm,
+			email,
+			tel,
+			create_date,
+			create_by
+		) VALUES (
+			#{id},
+			#{groupId},
+			#{personType},
+			#{personId},
+			#{name},
+			#{qqhm},
+			#{wxhm},
+			#{email},
+			#{tel},
+			#{createDate},
+			#{createBy.id}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ums_contact SET 	
+			group_id = #{groupId},
+			person_type = #{personType},
+			person_id = #{personId},
+			name = #{name},
+			qqhm = #{qqhm},
+			wxhm = #{wxhm},
+			email = #{email},
+			tel = #{tel}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM ums_contact
+		WHERE id = #{id}
+	</update>
+
+	<update id="delteAllByGroupId">
+		update ums_contact set del_flag='1'
+		WHERE group_id = #{groupId}
+	</update>
+
+</mapper>

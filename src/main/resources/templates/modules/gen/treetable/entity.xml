@@ -13,7 +13,7 @@ package ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModule
 import ${i};
 </#list>
 
-import cn.net.dckj.enrolment.common.persistence.TreeEntity;
+import com.cd.ums.common.persistence.TreeEntity;
 
 /**
  * ${functionName}Entity

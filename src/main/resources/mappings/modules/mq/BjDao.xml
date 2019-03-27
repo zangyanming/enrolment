@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.BjDao">
+    
+	<sql id="bjColumns">
+		a.id AS "id",
+		a.xlh AS "xlh",
+		a.xxbm AS "xxbm",
+		a.xxmc AS "xxmc",
+		a.njcode AS "njcode",
+		a.njname AS "njname",
+		a.bjcode AS "bjcode",
+		a.bjname AS "bjname",
+		a.allname AS "allname",
+		a.othername AS "othername",
+		a.master AS "master",
+		a.master1 AS "master1",
+		a.bz AS "bz",
+		a.xd AS "xd",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.djdw AS "djdw.id",
+		a.djdwmc AS "djdwmc",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.gxdw AS "gxdw.id",
+		a.ssjg AS "ssjg",
+		a.ssjgmc AS "ssjgmc"
+	</sql>
+	
+	<sql id="bjJoins">
+		LEFT JOIN sys_office o17 ON o17.id = a.djdw
+		LEFT JOIN sys_office o22 ON o22.id = a.ssjg
+	</sql>
+    
+	<select id="get" resultType="Bj">
+		SELECT 
+			<include refid="bjColumns"/>
+		FROM jcxx_bjxx a
+		<include refid="bjJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Bj">
+		SELECT 
+			<include refid="bjColumns"/>
+		FROM jcxx_bjxx a
+		<include refid="bjJoins"/>
+		<where>
+			
+			<if test="xxbm != null and xxbm != ''">
+				AND a.xxbm = #{xxbm}
+			</if>
+			<if test="xxmc != null and xxmc != ''">
+				AND a.xxmc LIKE 
+					<if test="dbName == 'oracle'">'%'||#{xxmc}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xxmc}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{xxmc},'%')</if>
+			</if>
+			<if test="njname != null and njname != ''">
+				AND a.njname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{njname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{njname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{njname},'%')</if>
+			</if>
+			<if test="bjname != null and bjname != ''">
+				AND a.bjname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{bjname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{bjname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{bjname},'%')</if>
+			</if>
+			<if test="master != null and master != ''">
+				AND a.master LIKE 
+					<if test="dbName == 'oracle'">'%'||#{master}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{master}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{master},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Bj">
+		SELECT 
+			<include refid="bjColumns"/>
+		FROM jcxx_bjxx a
+		<include refid="bjJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcxx_bjxx(
+			id,
+			xlh,
+			xxbm,
+			xxmc,
+			njcode,
+			njname,
+			bjcode,
+			bjname,
+			allname,
+			othername,
+			master,
+			master1,
+			bz,
+			xd,
+			create_date,
+			create_by,
+			djdw,
+			djdwmc,
+			update_date,
+			update_by,
+			gxdw,
+			ssjg,
+			ssjgmc
+		) VALUES (
+			#{id},
+			#{xlh},
+			#{xxbm},
+			#{xxmc},
+			#{njcode},
+			#{njname},
+			#{bjcode},
+			#{bjname},
+			#{allname},
+			#{othername},
+			#{master},
+			#{master1},
+			#{bz},
+			#{xd},
+			#{createDate},
+			#{createBy.id},
+			#{djdw.id},
+			#{djdwmc},
+			#{updateDate},
+			#{updateBy.id},
+			#{gxdw.id},
+			#{ssjg},
+			#{ssjgmc}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcxx_bjxx SET 	
+			xlh = #{xlh},
+			xxbm = #{xxbm},
+			xxmc = #{xxmc},
+			njcode = #{njcode},
+			njname = #{njname},
+			bjcode = #{bjcode},
+			bjname = #{bjname},
+			allname = #{allname},
+			othername = #{othername},
+			master = #{master},
+			master1 = #{master1},
+			bz = #{bz},
+			xd = #{xd},
+			djdw = #{djdw.id},
+			djdwmc = #{djdwmc},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			gxdw = #{gxdw.id},
+			ssjg = #{ssjg},
+			ssjgmc = #{ssjgmc}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jcxx_bjxx
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

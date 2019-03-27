@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.XsDao">
+    
+	<sql id="xsColumns">
+		a.id AS "id",
+		a.xlh AS "xlh",
+		a.xxbm AS "xxbm",
+		a.bjid AS "bjid",
+		a.xsid AS "xsid",
+		a.xd AS "xd",
+		a.nj AS "nj",
+		a.bj AS "bj",
+		a.xm AS "xm",
+		a.xb AS "xb",
+		a.csrq AS "csrq",
+		a.sfzh AS "sfzh",
+		a.xszh AS "xszh",
+		a.mz AS "mz",
+		a.hjdz AS "hjdz",
+		a.sjhm AS "sjhm",
+		a.wxhm AS "wxhm",
+		a.email AS "email",
+		a.qqhm AS "qqhm",
+		a.wbhm AS "wbhm",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_by AS "updateBy.id"
+	</sql>
+	
+	<sql id="xsJoins">
+	</sql>
+    
+	<select id="get" resultType="Xs">
+		SELECT 
+			<include refid="xsColumns"/>
+		FROM jcxx_xsxx a
+		<include refid="xsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Xs">
+		SELECT 
+			<include refid="xsColumns"/>
+		FROM jcxx_xsxx a
+		<include refid="xsJoins"/>
+		<where>
+			
+			<if test="xm != null and xm != ''">
+				AND a.xm = #{xm}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Xs">
+		SELECT 
+			<include refid="xsColumns"/>
+		FROM jcxx_xsxx a
+		<include refid="xsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcxx_xsxx(
+			id,
+			xxbm,
+			bjid,
+			xsid,
+			xd,
+			nj,
+			bj,
+			xm,
+			xb,
+			csrq,
+			sfzh,
+			xszh,
+			mz,
+			hjdz,
+			sjhm,
+			wxhm,
+			email,
+			qqhm,
+			wbhm,
+			create_date,
+			create_by,
+			update_by
+		) VALUES (
+			#{id},
+			#{xxbm},
+			#{bjid},
+			#{xsid},
+			#{xd},
+			#{nj},
+			#{bj},
+			#{xm},
+			#{xb},
+			#{csrq},
+			#{sfzh},
+			#{xszh},
+			#{mz},
+			#{hjdz},
+			#{sjhm},
+			#{wxhm},
+			#{email},
+			#{qqhm},
+			#{wbhm},
+			#{createDate},
+			#{createBy.id},
+			#{updateBy.id}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcxx_xsxx SET 	
+			xxbm = #{xxbm},
+			bjid = #{bjid},
+			xsid = #{xsid},
+			xd = #{xd},
+			nj = #{nj},
+			bj = #{bj},
+			xm = #{xm},
+			xb = #{xb},
+			csrq = #{csrq},
+			sfzh = #{sfzh},
+			xszh = #{xszh},
+			mz = #{mz},
+			hjdz = #{hjdz},
+			sjhm = #{sjhm},
+			wxhm = #{wxhm},
+			email = #{email},
+			qqhm = #{qqhm},
+			wbhm = #{wbhm},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jcxx_xsxx
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

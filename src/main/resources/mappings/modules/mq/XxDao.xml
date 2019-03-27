@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.XxDao">
+    
+	<sql id="xxColumns">
+		a.id AS "id",
+		a.xlh AS "xlh",
+		a.xxbm AS "xxbm",
+		a.xxmc AS "xxmc",
+		a.xxlb AS "xxlb",
+		a.xxxz AS "xxxz",
+		a.xxdz AS "xxdz",
+		a.gsdw AS "gsdw.id",
+		a.gsdwmc AS "gsdwmc",
+		a.lxdh AS "lxdh",
+		a.xz AS "xz",
+		a.bz AS "bz",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.djdw AS "djdw.id",
+		a.djdwmc AS "djdwmc",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.gxdw AS "gxdw",
+		a.zt AS "zt"
+	</sql>
+	
+	<sql id="xxJoins">
+		LEFT JOIN sys_office o8 ON o8.id = a.gsdw
+		LEFT JOIN sys_office o15 ON o15.id = a.djdw
+	</sql>
+    
+	<select id="get" resultType="Xx">
+		SELECT 
+			<include refid="xxColumns"/>
+		FROM jcxx_xxxx a
+		<include refid="xxJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Xx">
+		SELECT 
+			<include refid="xxColumns"/>
+		FROM jcxx_xxxx a
+		<include refid="xxJoins"/>
+		<where>
+			
+			<if test="xxmc != null and xxmc != ''">
+				AND a.xxmc LIKE 
+					<if test="dbName == 'oracle'">'%'||#{xxmc}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xxmc}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{xxmc},'%')</if>
+			</if>
+			<if test="gsdwmc != null and gsdwmc != ''">
+				AND a.gsdwmc LIKE 
+					<if test="dbName == 'oracle'">'%'||#{gsdwmc}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{gsdwmc}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{gsdwmc},'%')</if>
+			</if>
+			<if test="xz != null and xz != ''">
+				AND a.xz LIKE 
+					<if test="dbName == 'oracle'">'%'||#{xz}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xz}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{xz},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Xx">
+		SELECT 
+			<include refid="xxColumns"/>
+		FROM jcxx_xxxx a
+		<include refid="xxJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcxx_xxxx(
+			id,
+			xxbm,
+			xxmc,
+			xxlb,
+			xxxz,
+			xxdz,
+			gsdw,
+			gsdwmc,
+			lxdh,
+			xz,
+			bz,
+			create_date,
+			create_by,
+			djdw,
+			djdwmc,
+			update_date,
+			update_by,
+			gxdw,
+			zt
+		) VALUES (
+			#{id},
+			#{xxbm},
+			#{xxmc},
+			#{xxlb},
+			#{xxxz},
+			#{xxdz},
+			#{gsdw.id},
+			#{gsdwmc},
+			#{lxdh},
+			#{xz},
+			#{bz},
+			#{createDate},
+			#{createBy.id},
+			#{djdw.id},
+			#{djdwmc},
+			#{updateDate},
+			#{updateBy.id},
+			#{gxdw},
+			#{zt}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcxx_xxxx SET 	
+			xxbm = #{xxbm},
+			xxmc = #{xxmc},
+			xxlb = #{xxlb},
+			xxxz = #{xxxz},
+			xxdz = #{xxdz},
+			gsdw = #{gsdw.id},
+			gsdwmc = #{gsdwmc},
+			lxdh = #{lxdh},
+			xz = #{xz},
+			bz = #{bz},
+			djdw = #{djdw.id},
+			djdwmc = #{djdwmc},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id},
+			gxdw = #{gxdw},
+			zt = #{zt}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jcxx_xxxx
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

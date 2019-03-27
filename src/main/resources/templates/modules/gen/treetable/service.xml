@@ -14,8 +14,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.net.dckj.enrolment.common.service.TreeService;
-import cn.net.dckj.enrolment.common.utils.StringUtils;
+import com.cd.ums.common.service.TreeService;
+import com.cd.ums.common.utils.StringUtils;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dao;
 

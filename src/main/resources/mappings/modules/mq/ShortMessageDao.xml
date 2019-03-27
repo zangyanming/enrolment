@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.ShortMessageDao">
+    
+	<sql id="shortMessageColumns">
+		a.id AS "id",
+		a.content AS "content",
+		a.sender_office_id AS "senderOfficeId",
+		o.name AS "senderOfficeName",
+		a.sender_id AS "senderId",
+		u.name AS "senderName",
+		a.receiver_ids AS "receiverIds",
+		a.receiver_names AS "receiverNames",
+		a.ischeck AS "ischeck",
+		a.checker_id AS "checkerId",
+		u.name AS  "checkerName",
+		a.check_state AS "checkState",
+		a.reason AS "reason",
+		a.check_date AS "checkDate",
+		a.checker_office_id AS "checkerOfficeId",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.send_date AS "sendDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="shortMessageJoins">
+		LEFT JOIN sys_office o on o.code = a.sender_office_id
+		LEFT JOIN sys_user u on u.id = a.sender_id
+	</sql>
+    
+	<select id="get" resultType="ShortMessage">
+		SELECT 
+			<include refid="shortMessageColumns"/>
+		FROM ums_shortmessage a
+		<include refid="shortMessageJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ShortMessage">
+		SELECT 
+			<include refid="shortMessageColumns"/>
+		FROM ums_shortmessage a
+		<include refid="shortMessageJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="senderOfficeId != null and senderOfficeId != ''">
+				AND a.sender_office_id = #{senderOfficeId}
+			</if>
+			<if test="beginSendDate != null and beginSendDate != ''">
+				AND a.send_date <![CDATA[ >= #{beginSendDate} ]]>
+			</if>
+			<if test="endSendDate != null and endSendDate != ''">
+				AND a.send_date <![CDATA[ <= #{endSendDate} ]]>
+			</if>
+			<if test="senderId != null and senderId != ''">
+				AND a.sender_id = #{senderId}
+			</if>
+			<if test="senderOfficeName != null and senderOfficeName != ''">
+				AND o.NAME LIKE
+				<if test="dbName == 'oracle'">'%'||#{senderOfficeName}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{senderOfficeName}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{senderOfficeName},'%')</if>
+			</if>
+
+			<if test="senderName != null and senderName != ''">
+				AND u.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{senderName}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{senderName}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{senderName},'%')</if>
+			</if>
+			<if test="receiverNames != null and receiverNames != ''">
+				AND a.receiver_names LIKE
+				<if test="dbName == 'oracle'">'%'||#{receiverNames}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{receiverNames}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{receiverNames},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.send_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ShortMessage">
+		SELECT 
+			<include refid="shortMessageColumns"/>
+		FROM ums_shortmessage a
+		<include refid="shortMessageJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ums_shortmessage(
+			id,
+			content,
+			sender_office_id,
+			sender_id,
+			receiver_ids,
+			receiver_names,
+			ischeck,
+			checker_id,
+			check_state,
+			reason,
+			check_date,
+			checker_office_id,
+			create_date,
+			create_by,
+			send_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{content},
+			#{senderOfficeId},
+			#{senderId},
+			#{receiverIds},
+			#{receiverNames},
+			#{ischeck},
+			#{checkerId},
+			#{checkState},
+			#{reason},
+			#{checkDate},
+			#{checkerOfficeId},
+			#{createDate},
+			#{createBy.id},
+			#{sendDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ums_shortmessage SET 	
+			content = #{content},
+			sender_office_id = #{senderOfficeId},
+			sender_id = #{senderId},
+			receiver_ids = #{receiverIds},
+			receiver_names = #{receiverNames},
+			ischeck = #{ischeck},
+			checker_id = #{checkerId},
+			check_state = #{checkState},
+			reason = #{reason},
+			check_date = #{checkDate},
+			checker_office_id = #{checkerOfficeId},
+			send_date = #{sendDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ums_shortmessage SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<select id="findLogChartByMonth" resultType="ChartData">
+		SELECT
+		date_format(a.create_date, '%Y%m') as "name",
+		count(1) as "cnt"
+		FROM ums_shortmessage a
+		<where>
+			a.success = '1'
+			<if test="yearstr != null and yearstr != ''">
+				AND date_format(a.create_date, '%Y') = #{yearstr}
+			</if>
+			<if test="fromDate != null and fromDate != ''">
+				AND date_format(a.create_date, '%Y%m') <![CDATA[ >= date_format(#{fromDate}, '%Y%m') ]]>
+			</if>
+			<if test="toDate != null and toDate != ''">
+				AND date_format(a.create_date, '%Y%m') <![CDATA[ <= date_format(#{toDate}, '%Y%m') ]]>
+			</if>
+		</where>
+		GROUP BY name
+		ORDER BY name
+	</select>
+
+	<select id="findLogChartByMessageType" resultType="ChartData">
+		SELECT
+		'短信消息' as "name",
+		count(1) as "cnt"
+		FROM ums_shortmessage a
+		<where>
+			a.success = '1'
+			<if test="yearstr != null and yearstr != ''">
+				AND date_format(a.create_date, '%Y') = #{yearstr}
+			</if>
+			<if test="fromDate != null and fromDate != ''">
+				AND a.create_date <![CDATA[ >= #{fromDate} ]]>
+			</if>
+			<if test="toDate != null and toDate != ''">
+				AND a.create_date <![CDATA[ <= #{toDate} ]]>
+			</if>
+		</where>
+		UNION ALL
+		SELECT
+		'电子邮件' as "name",
+		count(1) as "cnt"
+		FROM sys_log_email b
+		<where>
+			b.success = '1'
+			<if test="yearstr != null and yearstr != ''">
+				AND date_format(b.send_date, '%Y') = #{yearstr}
+			</if>
+			<if test="fromDate != null and fromDate != ''">
+				AND b.send_date <![CDATA[ >= #{fromDate} ]]>
+			</if>
+			<if test="toDate != null and toDate != ''">
+				AND b.send_date <![CDATA[ <= #{toDate} ]]>
+			</if>
+		</where>
+		UNION ALL
+		SELECT
+		'系统消息' as "name",
+		count(1) as "cnt"
+		FROM sys_log_sysmsg c
+		<where>
+			c.success = '1'
+			<if test="yearstr != null and yearstr != ''">
+				AND date_format(c.create_date, '%Y') = #{yearstr}
+			</if>
+			<if test="fromDate != null and fromDate != ''">
+				AND c.create_date <![CDATA[ >= #{fromDate} ]]>
+			</if>
+			<if test="toDate != null and toDate != ''">
+				AND c.create_date <![CDATA[ <= #{toDate} ]]>
+			</if>
+		</where>
+	</select>
+</mapper>

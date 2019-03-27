@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.SysAuditSysmsgDao">
+    
+	<sql id="sysAuditSysmsgColumns">
+		a.id AS "id",
+		a.send_name AS "sendName",
+		a.send_code AS "sendCode",
+		a.send_key AS "sendKey",
+		a.receiver_ids AS "receiverIds",
+		a.receiver_names AS "receiverNames",
+		a.receiver_codes AS "receiverCodes",
+		a.content AS "content",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.audit_by AS "auditBy",
+		a.audit_date AS "auditDate",
+		a.audit_status AS "auditStatus",
+		a.audit_reason AS "auditReason"
+	</sql>
+	
+	<sql id="sysAuditSysmsgJoins">
+	</sql>
+    
+	<select id="get" resultType="SysAuditSysmsg">
+		SELECT 
+			<include refid="sysAuditSysmsgColumns"/>
+		FROM sys_audit_sysmsg a
+		<include refid="sysAuditSysmsgJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SysAuditSysmsg">
+		SELECT 
+			<include refid="sysAuditSysmsgColumns"/>
+		FROM sys_audit_sysmsg a
+		<include refid="sysAuditSysmsgJoins"/>
+		<where>
+			
+			<if test="sendName != null and sendName != ''">
+				AND a.send_name = #{sendName}
+			</if>
+			<if test="sendCode != null and sendCode != ''">
+				AND a.send_code = #{sendCode}
+			</if>
+			<if test="auditStatus != null and auditStatus != ''">
+				AND a.audit_status = #{auditStatus}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.audit_status, a.audit_date DESC, a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SysAuditSysmsg">
+		SELECT 
+			<include refid="sysAuditSysmsgColumns"/>
+		FROM sys_audit_sysmsg a
+		<include refid="sysAuditSysmsgJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_audit_sysmsg(
+			id,
+			send_name,
+			send_code,
+			send_key,
+			receiver_ids,
+			receiver_names,
+			receiver_codes,
+			content,
+			create_by,
+			create_date,
+			audit_by,
+			audit_date,
+			audit_status,
+			audit_reason
+		) VALUES (
+			#{id},
+			#{sendName},
+			#{sendCode},
+			#{sendKey},
+			#{receiverIds},
+			#{receiverNames},
+			#{receiverCodes},
+			#{content},
+			#{createBy.id},
+			#{createDate},
+			#{auditBy},
+			#{auditDate},
+			#{auditStatus},
+			#{auditReason}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_audit_sysmsg SET 	
+			send_name = #{sendName},
+			send_code = #{sendCode},
+			send_key = #{sendKey},
+			receiver_ids = #{receiverIds},
+			receiver_names = #{receiverNames},
+			receiver_codes = #{receiverCodes},
+			content = #{content},
+			audit_by = #{auditBy},
+			audit_date = #{auditDate},
+			audit_status = #{auditStatus},
+			audit_reason = #{auditReason}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sys_audit_sysmsg
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

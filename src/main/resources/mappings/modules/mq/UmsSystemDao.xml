@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.UmsSystemDao">
+    
+	<sql id="umsSystemColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.application_unit AS "applicationUnit",
+		a.applicant AS "applicant",
+		a.email AS "email",
+		a.mobile AS "mobile",
+		a.phone AS "phone",
+		a.audit_by AS "auditBy",
+		a.audit_date AS "auditDate",
+		a.audit_status AS "auditStatus",
+		a.audit_reason AS "auditReason",
+		a.valid_date AS "validDate",
+		a.sys_code AS "sysCode",
+		a.sys_key AS "sysKey",
+		a.queue_name AS "queueName",
+		a.topic_name AS "topicName",
+		a.create_by AS "createBy.id",
+		u1.name AS "createBy.name",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		u2.name AS "updateBy.name",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="umsSystemJoins">
+		LEFT JOIN SYS_USER u1 ON u1.id = a.create_by
+		LEFT JOIN SYS_USER u2 ON u2.id = a.update_by
+	</sql>
+    
+	<select id="get" resultType="UmsSystem">
+		SELECT 
+			<include refid="umsSystemColumns"/>
+		FROM ums_system a
+		<include refid="umsSystemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UmsSystem">
+		SELECT 
+			<include refid="umsSystemColumns"/>
+		FROM ums_system a
+		<include refid="umsSystemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="eqName != null and eqName != ''">
+				AND a.name = #{eqName}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="eqSysCode != null and eqSysCode != ''">
+				AND a.sys_code = #{eqSysCode}
+			</if>
+			<if test="sysCode != null and sysCode != ''">
+				AND a.sys_code LIKE
+				<if test="dbName == 'oracle'">'%'||#{sysCode}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{sysCode}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{sysCode},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.audit_status = #{status}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by  = #{createBy.id}
+			</if>
+			<if test="ids != null">
+				and a.id in
+				<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="UmsSystem">
+		SELECT 
+			<include refid="umsSystemColumns"/>
+		FROM ums_system a
+		<include refid="umsSystemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ums_system(
+			id,
+			name,
+			application_unit,
+			applicant,
+			email,
+			mobile,
+			phone,
+			audit_by,
+			audit_date,
+			audit_status,
+			audit_reason,
+			valid_date,
+			sys_code,
+			sys_key,
+			queue_name,
+			topic_name,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{applicationUnit},
+			#{applicant},
+			#{email},
+			#{mobile},
+			#{phone},
+			#{auditBy},
+			#{auditDate},
+			#{auditStatus},
+			#{auditReason},
+			#{validDate},
+			#{sysCode},
+			#{sysKey},
+			#{queueName},
+			#{topicName},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ums_system SET 	
+			name = #{name},
+			application_unit = #{applicationUnit},
+			applicant = #{applicant},
+			email = #{email},
+			mobile = #{mobile},
+			phone = #{phone},
+			audit_by = #{auditBy},
+			audit_date = #{auditDate},
+			audit_status = #{auditStatus},
+			audit_reason = #{auditReason},
+			valid_date = #{validDate},
+			sys_code = #{sysCode},
+			sys_key = #{sysKey},
+			queue_name = #{queueName},
+			topic_name = #{topicName},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ums_system SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<select id="findByName" resultType="UmsSystem">
+		SELECT
+		<include refid="umsSystemColumns"/>
+		FROM ums_system a
+		<include refid="umsSystemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.name = #{name}
+			<if test="id != null and id != ''">
+				AND a.id != #{id}
+			</if>
+		</where>
+	</select>
+
+	<select id="findBySysCode" resultType="UmsSystem">
+		SELECT
+		<include refid="umsSystemColumns"/>
+		FROM ums_system a
+		<include refid="umsSystemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.sys_code = #{sysCode}
+			<if test="id != null and id != ''">
+				AND a.id != #{id}
+			</if>
+		</where>
+	</select>
+</mapper>

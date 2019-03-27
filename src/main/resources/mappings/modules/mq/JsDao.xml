@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.JsDao">
+    
+	<sql id="jsColumns">
+		a.id AS "id",
+		a.xlh AS "xlh",
+		a.xxbm AS "xxbm",
+		a.xxmc AS "xxmc",
+		a.xk AS "xk",
+		a.xm AS "xm",
+		a.sfzh AS "sfzh",
+		a.xb AS "xb",
+		a.csrq AS "csrq",
+		a.sjhm AS "sjhm",
+		a.email AS "email",
+		a.wxhm AS "wxhm",
+		a.qqhm AS "qqhm",
+		a.wbhm AS "wbhm",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate"
+	</sql>
+	
+	<sql id="jsJoins">
+	</sql>
+    
+	<select id="get" resultType="Js">
+		SELECT 
+			<include refid="jsColumns"/>
+		FROM jcxx_jsxx a
+		<include refid="jsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Js">
+		SELECT 
+			<include refid="jsColumns"/>
+		FROM jcxx_jsxx a
+		<include refid="jsJoins"/>
+		<where>
+			
+			<if test="xxmc != null and xxmc != ''">
+				AND a.xxmc LIKE 
+					<if test="dbName == 'oracle'">'%'||#{xxmc}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xxmc}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{xxmc},'%')</if>
+			</if>
+			<if test="xm != null and xm != ''">
+				AND a.xm LIKE 
+					<if test="dbName == 'oracle'">'%'||#{xm}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xm}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{xm},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Js">
+		SELECT 
+			<include refid="jsColumns"/>
+		FROM jcxx_jsxx a
+		<include refid="jsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jcxx_jsxx(
+			id,
+			xxbm,
+			xxmc,
+			xk,
+			xm,
+			sfzh,
+			xb,
+			csrq,
+			sjhm,
+			email,
+			wxhm,
+			qqhm,
+			wbhm,
+			create_date,
+			create_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{xxbm},
+			#{xxmc},
+			#{xk},
+			#{xm},
+			#{sfzh},
+			#{xb},
+			#{csrq},
+			#{sjhm},
+			#{email},
+			#{wxhm},
+			#{qqhm},
+			#{wbhm},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jcxx_jsxx SET 	
+			xxbm = #{xxbm},
+			xxmc = #{xxmc},
+			xk = #{xk},
+			xm = #{xm},
+			sfzh = #{sfzh},
+			xb = #{xb},
+			csrq = #{csrq},
+			sjhm = #{sjhm},
+			email = #{email},
+			wxhm = #{wxhm},
+			qqhm = #{qqhm},
+			wbhm = #{wbhm},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jcxx_jsxx
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

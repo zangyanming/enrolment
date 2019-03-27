@@ -8,7 +8,7 @@
 	<description>Activiti Configuration</description>
 	
 	<!-- 加载配置属性文件 -->
-	<context:property-placeholder ignore-unresolvable="true" location="classpath:enrol.properties" />
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:ums.properties" />
 	
 	<!-- Activiti begin -->
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
@@ -21,26 +21,26 @@
 
 		<!-- UUID作为主键生成策略 -->
 		<property name="idGenerator" ref="idGen" />
-
+		
 		<!-- 生成流程图的字体 -->
 		<property name="activityFontName" value="${activiti.diagram.activityFontName}"/>
 		<property name="labelFontName" value="${activiti.diagram.labelFontName}"/>
 		<property name="annotationFontName" value="${activiti.diagram.annotationFontName}"/><!-- 5.21.0 新增参数 -->
-
+		
 		<!-- 自定义用户权限 ，必须重新实现用户和组的相应方法-->
-		<property name="customSessionFactories">
+		<property name="customSessionFactories"> 
 			<list>
-				<bean class="cn.net.dckj.modules.act.service.ext.ActUserEntityServiceFactory"/>
-				<bean class="cn.net.dckj.modules.act.service.ext.ActGroupEntityServiceFactory"/>
+				<bean class="com.cd.ums.modules.act.service.ext.ActUserEntityServiceFactory"/>
+				<bean class="com.cd.ums.modules.act.service.ext.ActGroupEntityServiceFactory"/>
 			</list>
 		</property>
-
+		
 	</bean>
 	
 	<bean id="processEngineFactory" class="org.activiti.spring.ProcessEngineFactoryBean">
 		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
 	</bean>
-
+	
 	<bean id="processEngine" factory-bean="processEngineFactory" factory-method="getObject" />
 	<bean id="repositoryService" factory-bean="processEngineFactory" factory-method="getRepositoryService" />
 	<bean id="runtimeService" factory-bean="processEngineFactory" factory-method="getRuntimeService" />
@@ -53,7 +53,7 @@
 	<!-- json处理 
 	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
 	-->
-
+	
 	<!-- 设置默认的资源类型 -->
 	<bean id="contentTypeResolver" class="org.activiti.rest.common.application.DefaultContentTypeResolver" />
 	<!-- Activiti end -->

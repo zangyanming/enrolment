@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.SysLogSysmsgDao">
+
+    <sql id="sysLogSysmsgColumns">
+		a.id AS "id",
+		a.type AS "type",
+		a.title AS "title",
+		a.create_by AS "createBy",
+		a.create_date AS "createDate",
+		a.remote_addr AS "remoteAddr",
+		a.user_agent AS "userAgent",
+		a.request_uri AS "requestUri",
+		a.method AS "method",
+		a.params AS "params",
+		a.send_by AS "sendBy",
+		a.receive_by AS "receiveBy",
+		a.success AS "success",
+		a.msg_count AS "msgCount",
+		a.exception AS "exception"
+	</sql>
+
+    <sql id="sysLogSysmsgJoins">
+    </sql>
+
+    <select id="get" resultType="SysLogSysmsg">
+        SELECT
+        <include refid="sysLogSysmsgColumns"/>
+        FROM sys_log_sysmsg a
+        <include refid="sysLogSysmsgJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="SysLogSysmsg">
+        SELECT
+        <include refid="sysLogSysmsgColumns"/>
+        FROM sys_log_sysmsg a
+        <include refid="sysLogSysmsgJoins"/>
+        <where>
+
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            <if test="title != null and title != ''">
+                AND a.title LIKE
+                <if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+            </if>
+            <if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+                AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+            </if>
+            <!--<if test="sendBy != null and sendBy != ''">-->
+                <!--AND a.send_by = #{sendBy}-->
+            <!--</if>-->
+            <!--<if test="receiveBy != null and receiveBy != ''">-->
+                <!--AND a.receive_by = #{receiveBy}-->
+            <!--</if>-->
+            <if test="sendBy != null and sendBy != ''">
+                AND a.send_by LIKE
+                <if test="dbName == 'oracle'">'%'||#{sendBy}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{sendBy}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{sendBy},'%')</if>
+            </if>
+            <if test="receiveBy != null and receiveBy != ''">
+                AND a.receive_by LIKE
+                <if test="dbName == 'oracle'">'%'||#{receiveBy}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{receiveBy}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{receiveBy},'%')</if>
+            </if>
+            <if test="success != null and success != ''">
+                AND a.success = #{success}
+            </if>
+        </where>
+        <!--<choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>-->
+        ORDER BY a.create_date DESC
+    </select>
+
+    <select id="findAllList" resultType="SysLogSysmsg">
+        SELECT
+        <include refid="sysLogSysmsgColumns"/>
+        FROM sys_log_sysmsg a
+        <include refid="sysLogSysmsgJoins"/>
+        <where>
+
+        </where>
+        <!--<choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>-->
+        ORDER BY a.create_date DESC
+    </select>
+
+    <insert id="insert">
+		INSERT INTO sys_log_sysmsg(
+			id,
+			type,
+			title,
+			create_by,
+			create_date,
+			remote_addr,
+			user_agent,
+			request_uri,
+			method,
+			params,
+			send_by,
+			receive_by,
+			success,
+			msg_count,
+			exception
+		) VALUES (
+			#{id},
+			#{type},
+			#{title},
+			#{createBy.name},
+			#{createDate},
+			#{remoteAddr},
+			#{userAgent},
+			#{requestUri},
+			#{method},
+			#{params},
+			#{sendBy},
+			#{receiveBy},
+			#{success},
+			#{msgCount},
+			#{exception}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE sys_log_sysmsg SET 	
+			type = #{type},
+			title = #{title},
+			remote_addr = #{remoteAddr},
+			user_agent = #{userAgent},
+			request_uri = #{requestUri},
+			method = #{method},
+			params = #{params},
+			send_by = #{sendBy},
+			receive_by = #{receiveBy},
+			success = #{success},
+			msg_count = #{msgCount},
+			exception = #{exception}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+		DELETE FROM sys_log_sysmsg
+		WHERE id = #{id}
+	</update>
+
+    <select id="findLogChartByUmsSys" resultType="ChartData">
+        SELECT
+        a.send_by as "name",
+        COUNT(1) as "cnt"
+        FROM sys_log_sysmsg a
+        <include refid="sysLogSysmsgJoins"/>
+        <where>
+            a.type = '1' AND a.success = '1'
+            <!--<if test="fromDate != null and toDate != null and fromDate != '' and toDate != ''">-->
+            <!--AND a.create_date BETWEEN #{fromDate} AND #{toDate}-->
+            <!--</if>-->
+            <if test="fromDate != null and fromDate != ''">
+                AND a.create_date <![CDATA[ >= #{fromDate} ]]>
+            </if>
+            <if test="toDate != null and toDate != ''">
+                AND a.create_date <![CDATA[ <= #{toDate} ]]>
+            </if>
+        </where>
+        GROUP BY a.send_by
+        ORDER BY a.send_by
+    </select>
+
+    <select id="findLogChartByMonth" resultType="ChartData">
+        SELECT
+        date_format(a.create_date, '%Y%m') as "name",
+        count(1) as "cnt"
+        FROM sys_log_sysmsg a
+        <where>
+            a.type = '1' AND a.success = '1'
+            <if test="yearstr != null and yearstr != ''">
+                AND date_format(a.create_date, '%Y') = #{yearstr}
+            </if>
+            <if test="fromDate != null and fromDate != ''">
+                AND date_format(a.create_date, '%Y%m') <![CDATA[ >= date_format(#{fromDate}, '%Y%m') ]]>
+            </if>
+            <if test="toDate != null and toDate != ''">
+                AND date_format(a.create_date, '%Y%m') <![CDATA[ <= date_format(#{toDate}, '%Y%m') ]]>
+            </if>
+            <if test="userName != null and userName != ''">
+                AND a.send_by = #{userName}
+            </if>
+        </where>
+        GROUP BY name
+        ORDER BY name
+    </select>
+</mapper>

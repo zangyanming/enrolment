@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.mq.dao.ParentAddressBookDao">
+
+    <sql id="parentAddressBookColumns">
+		a.id AS "id",
+		a.dwbm AS "dwbm",
+		a.name AS "name",
+		a.qqhm AS "qqhm",
+		a.wxhm AS "wxhm",
+		a.email AS "email",
+		a.tel AS "tel",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.del_flag AS "delFlag"
+	</sql>
+
+    <sql id="parentAddressBookJoins">
+    </sql>
+
+    <select id="get" resultType="ParentAddressBook">
+        SELECT
+        <include refid="parentAddressBookColumns"/>
+        FROM ums_parent_address_book a
+        <include refid="parentAddressBookJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="ParentAddressBook">
+        SELECT
+        <include refid="parentAddressBookColumns"/>
+        FROM ums_parent_address_book a
+        <include refid="parentAddressBookJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="name != null and name != ''">
+                AND a.name LIKE
+                <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+                <if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+                <if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="ParentAddressBook">
+        SELECT
+        <include refid="parentAddressBookColumns"/>
+        FROM ums_parent_address_book a
+        <include refid="parentAddressBookJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findListByIds" resultType="ParentAddressBook">
+        SELECT
+        <include refid="parentAddressBookColumns"/>
+        FROM ums_parent_address_book a
+        <include refid="parentAddressBookJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="ids != null">
+                and a.id in
+                <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="dwbm != null and dwbm != ''">
+                AND a.dwbm = #{dwbm}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getContacts" resultType="ParentAddressBook">
+        SELECT
+        <include refid="parentAddressBookColumns"/>
+        FROM ums_parent_address_book a
+        <include refid="parentAddressBookJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            <if test="createBy != null and createBy != ''">
+                AND a.create_by = #{createBy}
+            </if>
+            <if test="dwbm != null and dwbm != ''">
+                AND a.dwbm = #{dwbm}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
+		INSERT INTO ums_parent_address_book(
+			id,
+			dwbm,
+			name,
+			qqhm,
+			wxhm,
+			email,
+			tel,
+			create_date,
+			create_by,
+			del_flag
+		) VALUES (
+			#{id},
+			#{dwbm},
+			#{name},
+			#{qqhm},
+			#{wxhm},
+			#{email},
+			#{tel},
+			#{createDate},
+			#{createBy.id},
+			#{delFlag}
+		)
+	</insert>
+
+    <update id="update">
+		UPDATE ums_parent_address_book SET 	
+			dwbm = #{dwbm},
+			name = #{name},
+			qqhm = #{qqhm},
+			wxhm = #{wxhm},
+			email = #{email},
+			tel = #{tel}
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete">
+		UPDATE ums_parent_address_book SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+</mapper>

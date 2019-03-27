@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.ums.modules.email.dao.SysLogEmailDao">
+    
+	<sql id="sysLogEmailColumns">
+		a.id AS "id",
+		a.title AS "title",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.remote_addr AS "remoteAddr",
+		a.user_agent AS "userAgent",
+		a.request_uri AS "requestUri",
+		a.method AS "method",
+		a.params AS "params",
+		a.send_by AS "sendBy",
+		a.receive_by AS "receiveBy",
+		a.send_date AS "sendDate",
+		a.attach_name AS "attachName",
+		a.success AS "success",
+		a.exception AS "exception"
+	</sql>
+	
+	<sql id="sysLogEmailJoins">
+	</sql>
+    
+	<select id="get" resultType="SysLogEmail">
+		SELECT 
+			<include refid="sysLogEmailColumns"/>
+		FROM sys_log_email a
+		<include refid="sysLogEmailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SysLogEmail">
+		SELECT 
+			<include refid="sysLogEmailColumns"/>
+		FROM sys_log_email a
+		<include refid="sysLogEmailJoins"/>
+		<where>
+			<!--<if test="beginSendDate != null and endSendDate != null and beginSendDate != '' and endSendDate != ''">
+				AND a.send_date BETWEEN #{beginSendDate} AND #{endSendDate}
+			</if>-->
+			<if test="beginSendDate != null and beginSendDate != ''">
+				AND a.send_date <![CDATA[ >= #{beginSendDate} ]]>
+			</if>
+			<if test="endSendDate != null and endSendDate != ''">
+				AND a.send_date <![CDATA[ <= #{endSendDate} ]]>
+			</if>
+			<if test="success != null and success != ''">
+				AND a.success = #{success}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SysLogEmail">
+		SELECT 
+			<include refid="sysLogEmailColumns"/>
+		FROM sys_log_email a
+		<include refid="sysLogEmailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_log_email(
+			id,
+			title,
+			create_by,
+			create_date,
+			remote_addr,
+			user_agent,
+			request_uri,
+			method,
+			params,
+			send_by,
+			receive_by,
+			send_date,
+			attach_name,
+			success,
+			exception
+		) VALUES (
+			#{id},
+			#{title},
+			#{createBy.id},
+			#{createDate},
+			#{remoteAddr},
+			#{userAgent},
+			#{requestUri},
+			#{method},
+			#{params},
+			#{sendBy},
+			#{receiveBy},
+			#{sendDate},
+			#{attachName},
+			#{success},
+			#{exception}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_log_email SET 	
+			title = #{title},
+			remote_addr = #{remoteAddr},
+			user_agent = #{userAgent},
+			request_uri = #{requestUri},
+			method = #{method},
+			params = #{params},
+			send_by = #{sendBy},
+			receive_by = #{receiveBy},
+			send_date = #{sendDate},
+			attach_name = #{attachName},
+			success = #{success},
+			exception = #{exception}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sys_log_email
+		WHERE id = #{id}
+	</update>
+
+	<select id="findLogChartByMonth" resultType="ChartData">
+		SELECT
+		date_format(a.send_date, '%Y%m') as "name",
+		count(1) as "cnt"
+		FROM sys_log_email a
+		<where>
+			a.success = '1'
+			<if test="yearstr != null and yearstr != ''">
+				AND date_format(a.send_date, '%Y') = #{yearstr}
+			</if>
+			<if test="fromDate != null and fromDate != ''">
+				AND date_format(a.send_date, '%Y%m') <![CDATA[ >= date_format(#{fromDate}, '%Y%m') ]]>
+			</if>
+			<if test="toDate != null and toDate != ''">
+				AND date_format(a.send_date, '%Y%m') <![CDATA[ <= date_format(#{toDate}, '%Y%m') ]]>
+			</if>
+		</where>
+		GROUP BY name
+		ORDER BY name
+	</select>
+</mapper>

@@ -14,8 +14,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cn.net.dckj.enrolment.common.persistence.Page;
-import cn.net.dckj.enrolment.common.service.CrudService;
+import com.cd.ums.common.persistence.Page;
+import com.cd.ums.common.service.CrudService;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dao;
 
