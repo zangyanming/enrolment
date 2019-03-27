@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.apache.shiro.web.filter.authc.FormAuthenticationFilter" %>
-<%@ page import="com.app.common.PbUserInfoAdapter" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <%
 
@@ -39,13 +38,6 @@
                     //error.appendTo($("#loginError").parent());
                 //}
             });
-            var loginName = "<%= PbUserInfoAdapter.getLoginName()%>"
-            var pwd = "<%= PbUserInfoAdapter.getPwd()%>"
-            if(loginName != null && loginName != "") {
-                $("#username").val(loginName);
-                $("#password").val(pwd);
-                $("#loginForm").submit();
-            }
         });
         // 如果在框架或在对话框中，则弹出提示并跳转到首页
         if (self.frameElement && self.frameElement.tagName == "IFRAME" || $('#left').length > 0 || $('.jbox').length > 0) {

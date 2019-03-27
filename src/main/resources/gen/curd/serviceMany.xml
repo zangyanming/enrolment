@@ -15,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cit.enrolment.common.persistence.Page;
-import com.cit.enrolment.common.service.CrudService;
-import com.cit.enrolment.common.utils.StringUtils;
+import cn.net.dckj.enrolment.common.persistence.Page;
+import cn.net.dckj.enrolment.common.service.CrudService;
+import cn.net.dckj.enrolment.common.utils.StringUtils;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dao;
 <#list table.childList as c>

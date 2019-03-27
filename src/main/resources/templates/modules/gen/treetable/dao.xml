@@ -9,8 +9,8 @@
  */
 package ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>;
 
-import com.cit.enrolment.common.persistence.TreeDao;
-import com.cit.enrolment.common.persistence.annotation.MyBatisDao;
+import cn.net.dckj.enrolment.common.persistence.TreeDao;
+import cn.net.dckj.enrolment.common.persistence.annotation.MyBatisDao;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 
 /**

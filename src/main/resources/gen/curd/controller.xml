@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cit.enrolment.common.config.Global;
-import com.cit.enrolment.common.persistence.Page;
-import com.cit.enrolment.common.web.BaseController;
-import com.cit.enrolment.common.utils.StringUtils;
+import cn.net.dckj.enrolment.common.config.Global;
+import cn.net.dckj.enrolment.common.persistence.Page;
+import cn.net.dckj.enrolment.common.web.BaseController;
+import cn.net.dckj.enrolment.common.utils.StringUtils;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 import ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Service;
 

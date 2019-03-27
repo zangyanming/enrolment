@@ -1,5 +1,5 @@
 <%@page import="java.io.File"%>
-<%@page import="com.cit.enrolment.common.utils.ImageGeo"%>
+<%@page import="cn.net.dckj.enrolment.common.utils.ImageGeo"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"%>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <!DOCTYPE html>
