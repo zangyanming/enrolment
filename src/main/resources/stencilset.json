@@ -63,17 +63,7 @@
       "description" : "标识文档版本为目的.",
       "popular" : true
     } ]
-  }, {
-    "name" : "process_namespacepackage",
-    "properties" : [ {
-      "id" : "process_namespace",
-      "type" : "String",
-      "title" : "目标名称空间",
-      "value" : "http://www.activiti.org/processdef",
-      "description" : "工作流目标命名空间.",
-      "popular" : true
-    } ]
-  }, {
+  },{
     "name" : "asynchronousdefinitionpackage",
     "properties" : [ {
       "id" : "asynchronousdefinition",

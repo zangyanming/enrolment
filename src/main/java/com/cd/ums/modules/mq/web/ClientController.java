@@ -23,11 +23,6 @@ import com.cd.ums.modules.mq.service.*;
 import com.cd.ums.modules.sys.entity.User;
 import com.cd.ums.modules.sys.security.SystemAuthorizingRealm;
 import com.cd.ums.modules.sys.utils.UserUtils;
-import com.cd.ums.modules.wx.entity.SysAuditWx;
-import com.cd.ums.modules.wx.model.WxMsg;
-import com.cd.ums.modules.wx.service.SysAuditWxService;
-import com.cd.ums.modules.wx.web.WxController;
-import com.google.common.collect.Lists;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
@@ -1134,96 +1129,6 @@ public class ClientController extends BaseController {
             }
         } catch (Exception e) {
             jsonData.setSuccess(false).setMessage("应用系统消息审核失败！原因：" + e.getMessage());
-        }
-        return jsonData;
-    }
-
-    // 微信消息发送
-    @Autowired
-    private WxController wxController;
-
-    @ResponseBody
-    @RequestMapping(value = "wx", method = RequestMethod.POST)
-    public JsonData sendWxMessage(@RequestBody WxMsg wxMsg, HttpServletRequest request) {
-        return wxController.sendMsg(wxMsg, request);
-    }
-
-    @Autowired
-    private SysAuditWxService sysAuditWxService;
-
-    // 微信消息审核
-    @ResponseBody
-    @RequestMapping(value = "wxMessageAudits", method = RequestMethod.GET)
-    public JsonData SysAuditWx(SysAuditWx sysAuditWx, HttpServletRequest request, HttpServletResponse response) {
-        JsonData jsonData = new JsonData();
-        /*//增加数据权限控制，只查询本人创建数据
-        if (sysAuditSysmsg.getCreateBy() == null) {
-            sysAuditSysmsg.setCreateBy(UserUtils.getUser());
-        } else {
-            if (StringUtils.isBlank(sysAuditSysmsg.getCreateBy().getId())) {
-                sysAuditSysmsg.setCreateBy(UserUtils.getUser());
-            }
-        }*/
-        try {
-            Page<SysAuditWx> page = sysAuditWxService.findPage(new Page<SysAuditWx>(request, response), sysAuditWx);
-            List<SysAuditWx> list = page.getList();
-            if (list != null && list.size() > 0) {
-                for (int i = 0; i < list.size(); i++) {
-                    String auditStatus = list.get(i).getAuditStatus();
-                    if (StringUtils.isBlank(auditStatus) || auditStatus.equals("0")) {
-                        list.get(i).setAuditStatusName("未审核");
-                        List<OperationData> operations = new ArrayList<OperationData>();
-                        OperationData operationData1 = new OperationData();
-                        operationData1.setName("pass");
-                        operationData1.setTitle("通过");
-                        //operationData1.setIcon("squareHandCorrect");
-                        operationData1.setIcon("usercheck");
-                        operations.add(operationData1);
-                        OperationData operationData2 = new OperationData();
-                        operationData2.setName("notPass");
-                        operationData2.setTitle("不通过");
-                        //operationData2.setIcon("squareMultiply");
-                        operationData2.setIcon("usertimes");
-                        operations.add(operationData2);
-                        list.get(i).setOperations(operations);
-                    } else if (auditStatus.equals("1")) {
-                        list.get(i).setAuditStatusName("通过");
-                    } else if (auditStatus.equals("2")) {
-                        list.get(i).setAuditStatusName("不通过");
-                    }
-                }
-            }
-            jsonData.setSuccess(true).setData(list).setTotalCount((int) page.getCount());
-        } catch (Exception e) {
-            jsonData.setSuccess(false).setMessage(e.getMessage());
-        }
-        return jsonData;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "wxMessageAudits/{id}/audit", method = RequestMethod.POST)
-    @Transactional
-    public JsonData auditWxMessageAudit(@PathVariable(value = "id") String id,
-                                        @RequestBody SysAuditWx sysAuditWx,
-                                        HttpServletRequest request) {
-        JsonData jsonData = new JsonData();
-        try {
-            String auditStatus = sysAuditWx.getAuditStatus();
-            SysAuditWx entity = sysAuditWxService.get(id);
-            entity.setAuditStatus(auditStatus);
-            entity.setAuditBy(UserUtils.getUser().getId());
-            entity.setAuditDate(new Date());
-            sysAuditWxService.save(entity);
-            jsonData.setSuccess(true).setMessage("微信消息审核成功");
-            if (auditStatus.equals("1")) {
-                WxMsg wxMsg = new WxMsg();
-                wxMsg.setContent(entity.getContent());
-                wxMsg.setReceiverOpenIds(entity.getReceiverOpenids());
-                wxMsg.setReceiverIds(entity.getReceiverIds());
-                jsonData = wxController.send(wxMsg, request);
-            }
-        } catch (Exception e) {
-            jsonData.setSuccess(false).setMessage("微信消息审核失败！原因：" + e.getMessage());
         }
         return jsonData;
     }
