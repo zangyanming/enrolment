@@ -3,7 +3,6 @@
  */
 package com.cd.ums.modules.mq.web;
 
-import com.SmsService;
 import com.cd.ums.common.beanvalidator.BeanValidators;
 import com.cd.ums.common.persistence.JsonData;
 import com.cd.ums.common.persistence.OperationData;
@@ -1015,7 +1014,7 @@ public class ClientController extends BaseController {
                 sendPhones = sendPhones.substring(0, sendPhones.length() - 1);
             }
 
-            ret = SmsService.SendMsg(sendPhones, message);
+            //ret = SmsService.SendMsg(sendPhones, message);
         }
 
         // 剩余的
@@ -1026,7 +1025,7 @@ public class ClientController extends BaseController {
                 sendPhones = sendPhones.substring(0, sendPhones.length() - 1);
             }
 
-            ret = SmsService.SendMsg(sendPhones, message);
+            //ret = SmsService.SendMsg(sendPhones, message);
         }
 
         ShortMessage shortMessage = new ShortMessage();
